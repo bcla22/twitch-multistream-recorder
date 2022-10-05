@@ -1,0 +1,5 @@
+#!/bin/bash
+
+source env/bin/activate
+
+DEBUG=false python3 main.py --open 

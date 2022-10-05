@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Stream Recordings{% endblock %}
+{% block content %}
+
+<div class="container my-5">
+  {% include 'includes/notifications.html' %}
+  <h4 class="mb-2">Recordings</h4>
+  <table class="table table-bordered table-sm table-hover table-striped" id="recordings_table">
+    <thead>
+      <tr>
+        <th scope="col">Twitch Username</th>
+        <th scope="col">Stream Name</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if recordings|length > 0 %}
+      {% for user, videos in recordings.items() %}
+      {% for video in videos %}
+      <tr>
+        <td>{{user}}</h1>
+          {% if video.get('processed') %}
+        <td>
+          <a href="/processed/{{user}}/{{video.get('path')}}">
+            {{video.get('path')}}
+          </a>
+        </td>
+        <td>
+          <div class="d-flex align-items-center">
+            <form method="post" action="/recording_action">
+              <input type="hidden" name="action" value="delete" />
+              <input type="hidden" name="user" value="{{user}}" />
+              <input type="hidden" name="path" value="{{video.get('path')}}" />
+              <button type="submit" class="btn btn-danger btn-sm onclick-show-spinner">Delete</button>
+            </form>
+          </div>
+        </td>
+        {% else %}
+        <td>
+          {{video.get('path')}}
+        </td>
+        <td>
+          <div class="d-flex">
+            <form method="post" action="/recording_action">
+              <input type="hidden" name="action" value="process" />
+              <input type="hidden" name="user" value="{{user}}" />
+              <input type="hidden" name="path" value="{{video.get('path')}}" />
+              <button type="submit" class="btn btn-success btn-sm onclick-show-spinner">Process</button>
+            </form>
+            <form method="post" action="/recording_action">
+              <input type="hidden" name="action" value="delete" />
+              <input type="hidden" name="user" value="{{user}}" />
+              <input type="hidden" name="path" value="{{video.get('path')}}" />
+              <button type="submit" class="btn btn-danger btn-sm onclick-show-spinner">Delete</button>
+            </form>
+          </div>
+        </td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+      {% endfor %}
+      {% else %}
+      <tr>
+        <td colspan="3">
+          No recorded streams
+        </td>
+      </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+<script>
+  $(document).ready(() => {
+    $('#recordings_table').DataTable({
+      pageLength: 500,
+      // lengthChange: false
+    });
+  })
+</script>
+{% endblock %}

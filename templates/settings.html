@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Settings{% endblock %}
+{% block content %}
+
+<div class="container mt-5">
+  <div class="card mb-5">
+    <div class="card-header">Settings</div>
+    <div class="card-body">
+      <form method="post" action="/settings">
+        <div class="form-check">
+          {% if settings.get('auto_process_recordings') %}
+            <input class="form-check-input" name="auto_process_recordings" type="checkbox" checked>
+          {% else %}
+            <input class="form-check-input" name="auto_process_recordings" type="checkbox">
+          {% endif %}
+          <label class="form-check-label">
+            Auto-process recorded streams
+          </label>
+        </div>
+        <div class="alert alert-secondary mt-5">
+          Note: Some settings may require a restart of the web server to take effect.
+        </div>
+        <button type="submit" class="btn btn-outline-success mt-2">Save Settings</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
