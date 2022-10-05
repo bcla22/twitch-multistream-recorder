@@ -1,12 +1,12 @@
 import datetime
 import enum
-from logging import getLogger
 import os
 import signal
 import subprocess
 import sys
 import time
 import typing
+from logging import getLogger
 from threading import Thread
 
 import requests
